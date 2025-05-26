@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      cmr-320-loreseeker-s-stone_0: -6343816462783782208
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

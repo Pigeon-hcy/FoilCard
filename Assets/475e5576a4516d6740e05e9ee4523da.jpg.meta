@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: e4a4692f6eeb3ac4eb5f8d6632a814a6
+guid: b5ea2b58501538e4c8ba342ea79ec0e7
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8733418032987315624
-    second: dotsImageBlackbgBig_0
+      213: -2168692128081989101
+    second: 475e5576a4516d6740e05e9ee4523da_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: dotsImageBlackbgBig_0
+      name: 475e5576a4516d6740e05e9ee4523da_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1024
-        height: 1024
+        width: 672
+        height: 936
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 852ecc4129aacc680800000000000000
-      internalID: -8733418032987315624
+      spriteID: 312bc7eeff147e1e0800000000000000
+      internalID: -2168692128081989101
       vertices: []
       indices: 
       edges: []
@@ -147,8 +147,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      dotsImageBlackbgBig_0: -8733418032987315624
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
