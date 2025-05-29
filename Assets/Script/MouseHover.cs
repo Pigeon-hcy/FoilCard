@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -24,6 +25,8 @@ public class MouseHover : MonoBehaviour
     bool isMouseOver;
     float timer;
     bool isAnimating;
+    [SerializeField]
+    List<GameObject> particles;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -61,6 +64,14 @@ public class MouseHover : MonoBehaviour
         isMouseOver = true;
         timer = 0f;
         isAnimating = true;
+        if (particles != null)
+        {
+            for (int i = 0; i < particles.Count; ++i)
+            {
+                particles[i].transform.localScale = new Vector3(2, 2, 2);
+            }
+            
+        }
     }
 
     private void OnMouseOver()
@@ -80,6 +91,14 @@ public class MouseHover : MonoBehaviour
         isMouseOver = false;
         timer = 0f;
         isAnimating = true;
+        if (particles != null)
+        {
+            for (int i = 0; i < particles.Count; ++i)
+            {
+                particles[i].transform.localScale = new Vector3(1, 1, 1);
+            }
+
+        }
     }
 
     private void cardIdle()
