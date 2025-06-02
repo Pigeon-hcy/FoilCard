@@ -27,6 +27,8 @@ public class MouseHover : MonoBehaviour
     bool isAnimating;
     [SerializeField]
     List<GameObject> particles;
+    [SerializeField]
+    private CardCamera previewCamera;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -83,6 +85,12 @@ public class MouseHover : MonoBehaviour
         Vector3 offset = transform.position - mouseWorldPos;
 
         transform.localRotation = Quaternion.Euler(-offset.y * Range, offset.x * Range, 0f);
+
+        if (previewCamera != null)
+        {
+            previewCamera.angle = Mathf.Clamp(180f + offset.x * 20f, 150f, 210f);  // 左右转动
+            previewCamera.height = Mathf.Clamp(offset.y * 1.2f, -2f, 1f); // 上下转动模拟 pitch
+        }
     }
 
     private void OnMouseExit()
@@ -98,6 +106,12 @@ public class MouseHover : MonoBehaviour
                 particles[i].transform.localScale = new Vector3(1, 1, 1);
             }
 
+        }
+
+        if (previewCamera != null)
+        {
+            previewCamera.angle = 185f;  
+            previewCamera.height = 0; 
         }
     }
 
