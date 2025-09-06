@@ -422,7 +422,19 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Turbulence_233_c_0: -7464382923197833157
+      Turbulence_233_c_1: -8873960790420970971
+      Turbulence_233_c_10: 2520067345335962615
+      Turbulence_233_c_11: 5040841145195254414
+      Turbulence_233_c_2: -4959529992840701377
+      Turbulence_233_c_3: -8478631120256717525
+      Turbulence_233_c_4: -1619752233530810375
+      Turbulence_233_c_5: 3432084966807934741
+      Turbulence_233_c_6: 8189906035342195881
+      Turbulence_233_c_7: -6177409228913738573
+      Turbulence_233_c_8: 1693509099540731924
+      Turbulence_233_c_9: 5741248023303364435
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

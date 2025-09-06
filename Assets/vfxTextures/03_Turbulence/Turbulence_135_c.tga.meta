@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Turbulence_135_c_0: -8470529148492595592
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

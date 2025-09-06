@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Glow_032_c_0: 8587721606345893517
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

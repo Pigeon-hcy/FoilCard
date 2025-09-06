@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      sld-1074-sol-ring_0: -6039492990614387275
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Ring_060_c_0: -5477302082329650247
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
