@@ -28,11 +28,15 @@
                 float3 colorA = float3(0.72, 0.04, 0.30);
                 float3 colorB = float3(0.00, 0.57, 0.68);
                 
-                float t = _Time;
+
+                
+                float t = _Time.y; // (t/20, t, t * 2, t * 3)
                 float l = 0.5;
                 
-
-                float3 c = lerp(colorA, colorB, sin(t)*0.5+0.5);
+                l = sin(t) * 0.5 + 0.5;
+                l = pow(l, 6);
+                
+                float3 c = lerp(colorA, colorB, smoothstep(0, 1, l));
                 return float4(c, 1);
             }
             ENDHLSL

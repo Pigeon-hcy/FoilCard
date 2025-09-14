@@ -26,15 +26,27 @@
 
             float4 frag (Interpolators i) : SV_Target {
                 float2 uv = i.uv;
-                uv = uv * 5 -1;
-                uv *= 10;
-                float t = _Time;
-                float x = uv.x;
 
+                uv = uv * 2 - 1;
+                uv *= 5;
+                
+                
+                float x = uv.x;
                 float y = uv.y;
 
                 float c = x;
-                c = smoothstep(-1,sin(3*t)*y,sin(x));
+                c = sin(x);
+                c = cos(x);
+                c = abs(x);
+                c = ceil(x);
+                c = floor(x);
+                c = frac(x);
+                c = min(x,y);
+                c = max(x,y);
+                c = sign(x);
+                c = step(x,y);
+                c = smoothstep(-2, 2, x);
+                
                 return float4(c.rrr, 1.0);
             }
             ENDHLSL

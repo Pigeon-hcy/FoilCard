@@ -36,8 +36,14 @@
             float4 frag (Interpolators i) : SV_Target {
                 float2 uv = i.uv * 2.0 - 1.0;
                 float2 outUV = uv;
-                
 
+                float2 polarUV = float2(atan2(uv.x, uv.y), length(uv));
+                polarUV.x = polarUV.x / TAU + 0.5;
+                outUV = lerp(uv, polarUV, _spaceBlend);
+
+                outUV *= 8;
+                outUV = frac(outUV);
+                
                 return float4(outUV.x, 0.0, outUV.y, 1.0);
             }
             ENDHLSL
