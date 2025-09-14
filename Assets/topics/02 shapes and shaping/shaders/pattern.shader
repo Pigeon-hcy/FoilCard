@@ -85,7 +85,7 @@
                 /////////////////////Ramp////////////////////////
                 uv = uv * 2 - 1;
 
-                float offsetY = _Am * sin(uv.x * _k + _Time * _w + 0) * 0.5 + 0.3;
+                float offsetY = _Am * sin(uv.x * _k + _Time * _w + -0.5) * 0.5 + 0.3;
                 uv.y -= offsetY + _y;
 
                 float angle = atan2(uv.y, uv.x); // angle
