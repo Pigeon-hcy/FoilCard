@@ -27,9 +27,12 @@
             float4 frag (Interpolators i) : SV_Target {
                 float2 uv = i.uv;
 
-                float wn = floor(uv * 32);
-                float uvDot = dot(uv, float2(128.239,-782.786));
-                wn = frac(sin(uvDot) * 12837012);
+                float wn = 0;
+
+                uv = floor(uv * 128);
+                
+                float uvDot = dot(uv, float2(128.239, -78.381));
+                wn = frac(sin(uvDot) * 437587.5453);
 
                 return float4(wn.rrr, 1.0);
             }

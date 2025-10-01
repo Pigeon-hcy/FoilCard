@@ -32,18 +32,18 @@
                 float2 uv = i.uv;
 
                 float vn = 0;
-                
+
                 uv *= 20;
 
                 float ipos = floor(uv.x);
                 float fpos = frac(uv.x);
-                vn = rand(ipos);
+
+                float perc = fpos;
+                perc = smoothstep(0, 1, perc);
+
+                vn = lerp(rand(ipos), rand(ipos + 1), perc);
                 
-                float prec = fpos;
-
-                prec = smoothstep(0,1,prec);
-
-                vn = lerp(rand(ipos), rand(ipos + 1), prec);
+                
                 return float4(vn.rrr, 1.0);
             }
             ENDHLSL

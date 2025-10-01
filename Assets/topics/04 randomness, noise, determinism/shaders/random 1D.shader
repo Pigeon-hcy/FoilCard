@@ -29,7 +29,8 @@
                 
                 float rand = 0;
 
-                rand = frac(sin(uv.x) * 912083);
+                rand = frac(sin(uv.x) * 4375887.5453);
+                
                 return float4(rand.rrr, 1.0);
             }
             ENDHLSL

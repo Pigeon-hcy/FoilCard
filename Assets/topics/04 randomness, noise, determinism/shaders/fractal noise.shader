@@ -56,6 +56,11 @@
 
                 float fn = 0;
 
+                // half the amplitude and double the frequency each time
+                fn  = (1 / 2.0)  * value_noise( uv * 1 );
+                fn += (1 / 4.0)  * value_noise( uv * 2 );
+                fn += (1 / 8.0)  * value_noise( uv * 4 );
+                fn += (1 / 16.0) * value_noise( uv * 8 );
                 
                 return float4(fn.rrr, 1.0);
             }
