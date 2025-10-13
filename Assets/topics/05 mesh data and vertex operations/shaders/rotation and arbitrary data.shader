@@ -3,6 +3,9 @@
         _rotX ("x rotation", Range(-2,2)) = 0
         _rotY ("y rotation", Range(-2,2)) = 0
         _rotZ ("z rotation", Range(-2,2)) = 0
+        _animSpeed ("Animation Speed", Range(0.1, 5)) = 1
+        _rotYAnim ("Y Rotation Range", Range(0.01, 0.5)) = 0.05
+        _animDuration ("Animation Duration (each)", Range(1, 10)) = 2
     }
 
     SubShader {
@@ -19,6 +22,9 @@
             float _rotX;
             float _rotY;
             float _rotZ;
+            float _animSpeed;
+            float _rotYAnim;
+            float _animDuration;
             CBUFFER_END
 
             struct MeshData {
@@ -50,18 +56,37 @@
                 // set vertex color
                 o.color = v.color;
 
-                // create rotation matrices for each axis
-                float4x4 x = rotation_matrix(float3(1, 0, 0), _rotX * TAU * o.color.r);
-                float4x4 y = rotation_matrix(float3(0, 1, 0), _rotY * TAU * o.color.r);
-                float4x4 z = rotation_matrix(float3(0, 0, 1), _rotZ * TAU * o.color.r);
 
-                // multiply rotation matrices together to get the combined matrix
-                float4x4 rotation = mul(mul(x, y), z);
-
-                // multiply the object space vertex position by the rotation matrix
-                v.vertex = mul(rotation, v.vertex);
+                float time = _Time.y * _animSpeed;
+                float totalCycleDuration = _animDuration * 2.0; 
+                float cycleTime = fmod(time, totalCycleDuration);
                 
 
+                float animRotY = _rotY;
+                float animRotZ = _rotZ;
+
+                ////////////////////////////////////////////////////////////////////////////
+                float cycleIndex = floor(time / totalCycleDuration);
+                float randomSeed = frac(sin(cycleIndex * 12.12314) * 124131.23);
+                int randomSpins = (int)(randomSeed * 10.0) + 1;
+
+
+                ////////////////////////////////////////////////////////////////////////////
+                if (cycleTime < _animDuration) { 
+                    float phase1Time = cycleTime / _animDuration * TAU;
+                    animRotY += sin(phase1Time) * _rotYAnim;
+                } else {
+                    float phase2Time = (cycleTime - _animDuration) / _animDuration;
+                    animRotZ += phase2Time * randomSpins;
+                }
+
+                float4x4 x = rotation_matrix(float3(1, 0, 0), _rotX * TAU);
+                float4x4 y = rotation_matrix(float3(0, 1, 0), animRotY * TAU);
+                float4x4 z = rotation_matrix(float3(0, 0, 1), animRotZ * TAU);
+
+
+                float4x4 rotation = mul(mul(x, y), z);
+                v.vertex = mul(rotation, v.vertex);
                 o.vertex = TransformObjectToHClip(v.vertex);
                 
                 return o;
