@@ -27,9 +27,12 @@ Material:
     m_Floats:
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     - _morph: 1
     - _radius: -0.47
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
     - _autoMorph: 1
@@ -46,6 +49,9 @@ Material:
     - _spiralTurns: 0.61
     - _tornadoScale: 0.3
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
