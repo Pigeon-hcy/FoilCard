@@ -25,10 +25,10 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _displacement: 0.1
+    - _displacement: 0.0279
     - _scale: 62.4
     - _timeInfluence: 1.5
-    - _timeScale: 52
+    - _timeScale: 3
     m_Colors: []
   m_BuildTextureStacks: []
   m_AllowLocking: 1

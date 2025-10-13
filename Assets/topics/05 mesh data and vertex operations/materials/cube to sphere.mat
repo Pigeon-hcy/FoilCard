@@ -25,8 +25,24 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
+<<<<<<< Updated upstream
     - _morph: 1
     - _radius: -0.47
+=======
+    - _autoMorph: 1
+    - _displacement: 0.28
+    - _frequency: 20.04
+    - _incenseNoise: 0.19
+    - _incenseThickness: 0.25
+    - _morph: 0
+    - _morphSpeed: 0.4
+    - _radius: 0.008
+    - _rotX: 1.32
+    - _rotY: 3.05
+    - _rotZ: 2.71
+    - _spiralTurns: 0.61
+    - _tornadoScale: 0.3
+>>>>>>> Stashed changes
     m_Colors: []
   m_BuildTextureStacks: []
   m_AllowLocking: 1

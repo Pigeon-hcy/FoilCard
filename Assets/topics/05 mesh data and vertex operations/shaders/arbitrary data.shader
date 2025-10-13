@@ -22,11 +22,13 @@
             struct MeshData {
                 float4 vertex : POSITION;
                 float3 normal : NORMAL;
+                float3 color : COLOR;
             };
 
             struct Interpolators {
                 float4 vertex : SV_POSITION;
                 float3 normal : NORMAL;
+                float2 worldUV : TEXCOORD0;
             };
 
             float wave (float2 uv) {
@@ -42,6 +44,11 @@
 
             Interpolators vert (MeshData v) {
                 Interpolators o;
+
+                // get world xz
+                o.worldUV = mul(unity_ObjectToWorld, v.vertex).xz * 0.02;
+
+                v.vertex.y += wave(o.worldUV) * _displacement * v.color;
                 
                 o.vertex = TransformObjectToHClip(v.vertex);
                 o.normal = v.normal;
@@ -51,6 +58,12 @@
 
             float4 frag (Interpolators i) : SV_Target {
                 float3 color = 0;
+
+                float w = wave(i.worldUV);
+                float3 topFace = (w.rrr * 0.5 + 0.5) * _color;
+                float3 otherFaces = lerp(_color * 0.75, _color * 0.65, i.normal.x);
+
+                color = lerp(otherFaces, topFace, i.normal.y);
                 
                 return float4(color, 1.0);
             }

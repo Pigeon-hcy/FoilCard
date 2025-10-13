@@ -22,9 +22,8 @@
                 return frac(sin(dot(uv.xy, float2(12.9898, 78.233))) * 43758.5453123);
             }
 
-
             float3 rand_vec (float3 pos) {
-                return float3(rand(pos.xz), rand(pos.yx), rand(pos.zy));
+                return float3(rand(pos.xz), rand(pos.yx), rand(pos.zy)) * 2 - 1;
             }
 
             struct MeshData {
@@ -41,8 +40,8 @@
             Interpolators vert (MeshData v) {
                 Interpolators o;
 
-                v.vertex.xyz += normalize(rand_vec(v.vertex.xyz  + round(_Time.y * _timeScale))) * _displacement;
-
+                v.vertex.xyz += normalize(rand_vec(v.vertex.xyz + round(_Time.y * _timeScale))) * _displacement;
+                
                 o.vertex = TransformObjectToHClip(v.vertex);
                 o.uv = v.uv;
                 return o;

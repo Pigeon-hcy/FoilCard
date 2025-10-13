@@ -59,9 +59,9 @@
 
             Interpolators vert (MeshData v) {
                 Interpolators o;
-                
-                v.vertex.xyz += v.normal * fractal_noise(v.uv * _scale) * _displacement;
 
+                v.vertex.xyz += v.normal * fractal_noise(v.uv * _scale) * _displacement;
+                // ( += (0, 0, noise) * normal(0, 0, 1)
                 o.vertex = TransformObjectToHClip(v.vertex);
                 o.uv = v.uv;
                 return o;

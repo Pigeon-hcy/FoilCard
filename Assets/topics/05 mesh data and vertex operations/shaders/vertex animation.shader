@@ -26,27 +26,25 @@
             struct Interpolators {
                 float4 vertex : SV_POSITION;
                 float2 uv : TEXCOORD0;
-                float displacement : TEXCOORD1;
+                float disp : TEXCOORD1;
             };
 
             Interpolators vert (MeshData v) {
                 Interpolators o;
+            
+                o.disp = sin(((v.uv.x + v.uv.y) * _frequency) + _Time.z) * 0.5 + 0.5;
 
-
-                o.displacement = sin(((v.uv.x + v.uv.y) * _frequency) + _Time.z) * 0.5f + 0.5f;
-
-                v.vertex.xyz += v.normal * o.displacement * _displacement;
-
-
+                v.vertex.xyz += v.normal * o.disp * _displacement;
+                
                 o.vertex = TransformObjectToHClip(v.vertex);
                 o.uv = v.uv;
                 return o;
             }
 
             float4 frag (Interpolators i) : SV_Target {
-                float3 color = float3(i.uv.x, i.displacement, i.uv.y);
-                
-                return float4(i.uv.x, 0, i.uv.y, 1.0);
+                float3 color = float3(i.uv.x, 0, i.uv.y);
+                color *= i.disp * 0.5 + 0.5;
+                return float4(color, 1.0);
             }
             ENDHLSL
         }

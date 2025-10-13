@@ -49,6 +49,17 @@
 
                 // set vertex color
                 o.color = v.color;
+
+                // create rotation matrices for each axis
+                float4x4 x = rotation_matrix(float3(1, 0, 0), _rotX * TAU * o.color.r);
+                float4x4 y = rotation_matrix(float3(0, 1, 0), _rotY * TAU * o.color.r);
+                float4x4 z = rotation_matrix(float3(0, 0, 1), _rotZ * TAU * o.color.r);
+
+                // multiply rotation matrices together to get the combined matrix
+                float4x4 rotation = mul(mul(x, y), z);
+
+                // multiply the object space vertex position by the rotation matrix
+                v.vertex = mul(rotation, v.vertex);
                 
 
                 o.vertex = TransformObjectToHClip(v.vertex);
