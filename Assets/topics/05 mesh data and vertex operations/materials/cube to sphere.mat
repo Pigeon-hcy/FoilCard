@@ -26,9 +26,12 @@ Material:
     m_Ints: []
     m_Floats:
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     - _morph: 1
     - _radius: -0.47
 =======
+=======
+>>>>>>> Stashed changes
     - _autoMorph: 1
     - _displacement: 0.28
     - _frequency: 20.04
@@ -42,6 +45,9 @@ Material:
     - _rotZ: 2.71
     - _spiralTurns: 0.61
     - _tornadoScale: 0.3
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     m_Colors: []
   m_BuildTextureStacks: []
