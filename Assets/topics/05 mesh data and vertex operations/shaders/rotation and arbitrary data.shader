@@ -1,5 +1,7 @@
 ﻿Shader "shader lab/week 5/rotation and arbitrary data" {
     Properties {
+        _MainTex ("Main Texture", 2D) = "white" {}
+        _Color ("Color Tint", Color) = (1, 1, 1, 1)
         _rotX ("x rotation", Range(-2,2)) = 0
         _rotY ("y rotation", Range(-2,2)) = 0
         _rotZ ("z rotation", Range(-2,2)) = 0
@@ -18,7 +20,12 @@
 
             #define TAU 6.28318530718
 
+            TEXTURE2D(_MainTex);
+            SAMPLER(sampler_MainTex);
+
             CBUFFER_START(UnityPerMaterial)
+            float4 _MainTex_ST;
+            float4 _Color;
             float _rotX;
             float _rotY;
             float _rotZ;
@@ -29,11 +36,13 @@
 
             struct MeshData {
                 float4 vertex : POSITION;
+                float2 uv : TEXCOORD0;
                 float4 color : COLOR;
             };
 
             struct Interpolators {
                 float4 vertex : SV_POSITION;
+                float2 uv : TEXCOORD0;
                 float4 color : COLOR;
             };
 
@@ -53,6 +62,9 @@
             Interpolators vert (MeshData v) {
                 Interpolators o;
 
+                // set UV coordinates with tiling and offset
+                o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+                
                 // set vertex color
                 o.color = v.color;
 
@@ -93,7 +105,13 @@
             }
 
             float4 frag (Interpolators i) : SV_Target {
-                return float4(i.color.rgb, 1.0);
+                // Sample the texture
+                float4 texColor = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv);
+                
+                // Combine texture, color tint, and vertex color
+                float4 finalColor = texColor * _Color * i.color;
+                
+                return finalColor;
             }
             ENDHLSL
         }
