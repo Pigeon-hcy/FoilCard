@@ -25,9 +25,17 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _gloss: 1
+    - _centerDarkness: 1
+    - _fresnelPower: 10
+    - _gloss: 0
+    - _metallic: 1
+    - _rimIntensity: 4.68
+    - _rimPower: 4.98
     - _specularContrast: 32
     m_Colors:
-    - _surfaceColor: {r: 0.7607843, g: 0.9843137, b: 1, a: 1}
+    - _leftColor: {r: 0.63621235, g: 0, b: 1, a: 1}
+    - _rightColor: {r: 0, g: 0.26489756, b: 0.5660378, a: 1}
+    - _rimColor: {r: 1, g: 0, b: 0.5898218, a: 1}
+    - _surfaceColor: {r: 0, g: 0.4599319, b: 0.6320754, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

@@ -25,13 +25,13 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _diffuseLightSteps: 5.66
-    - _gloss: 1
+    - _diffuseLightSteps: 4.73
+    - _gloss: 0.481
     - _lightSteps: 23.95
     - _specularContrast: 32
-    - _specularLightSteps: 2.26
+    - _specularLightSteps: 5.42
     m_Colors:
-    - _ambientColor: {r: 0.1268245, g: 0.14040662, b: 0.2830189, a: 1}
-    - _surfaceColor: {r: 0.53640085, g: 0.5701511, b: 0.9245283, a: 1}
+    - _ambientColor: {r: 0.26415092, g: 0.19615278, b: 0.15076537, a: 1}
+    - _surfaceColor: {r: 0.43867922, g: 0.48403853, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

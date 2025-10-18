@@ -34,6 +34,6 @@ Material:
     m_Colors:
     - _ambientColor: {r: 0.2924528, g: 0.0731132, b: 0.0731132, a: 0}
     - _color: {r: 1, g: 1, b: 1, a: 1}
-    - _surfaceColor: {r: 1, g: 1, b: 1, a: 1}
+    - _surfaceColor: {r: 0.6556604, g: 0.96149224, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

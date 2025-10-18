@@ -39,8 +39,9 @@
                 Light light = GetMainLight();
                 float falloff = max(0, dot(normal, light.direction));
 
+                float halfLambert = pow(falloff * 0.5 + 0.5, 2);
                 
-                color = _surfaceColor * light.color;
+                color = halfLambert * _surfaceColor * light.color;
 
                 return float4(color, 1.0);
             }

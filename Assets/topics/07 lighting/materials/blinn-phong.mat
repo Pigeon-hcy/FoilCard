@@ -25,10 +25,20 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _gloss: 1
+    - _CellColorStrength: 1
+    - _FacetCount: 15.8
+    - _FacetStrength: 0
+    - _FresnelPower: 10
+    - _Gloss: 0.03
+    - _InnerGlow: 0.052
+    - _NoiseScale: 2.76
+    - _NoiseStrength: 0.324
+    - _ReflectionStrength: 0.478
+    - _VoronoiScale: 24.76
+    - _gloss: 0.168
     - _smoothness: 1
     - _specularContrast: 32
     m_Colors:
-    - _surfaceColor: {r: 0.759434, g: 0.98119307, b: 1, a: 1}
+    - _surfaceColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
