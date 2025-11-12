@@ -1,9 +1,9 @@
 ﻿Shader "shader lab/week 8/normal mapping" {
     Properties {
         _albedo ("albedo", 2D) = "white" {}
-        [no_scale_offset] _normalMap ("normal map", 2D) = "bump" {}
-        [no_scale_offset] _displacementMap ("displacement map", 2D) = "grey" {}
+        [NoScaleOffset] _normalMap ("normal map", 2D) = "bump" {}
         _gloss ("gloss", Range(0,1)) = 1
+        _normalIntensity ("normal intensity", Range(0,1)) = 1
         [Toggle] _toggle ("toggle", Float) = 1
     }
     SubShader {
@@ -20,7 +20,7 @@
             CBUFFER_START(UnityPerMaterial)
             float4 _albedo_ST;
             float _gloss;
-            float _displacementStrength;
+            float _normalIntensity;
             CBUFFER_END
 
             TEXTURE2D(_albedo);
@@ -28,9 +28,6 @@
 
             TEXTURE2D(_normalMap);
             SAMPLER(sampler_normalMap);
-
-            TEXTURE2D(_displacementMap);
-            SAMPLER(sampler_displacementMap);
 
             struct MeshData {
                 float4 vertex : POSITION;
@@ -50,15 +47,14 @@
 
             Interpolators vert (MeshData v) {
                 Interpolators o;
-
-                float height = SAMPLE_TEXTURE2D_LOD(_displacementMap, sampler_displacementMap, v.uv, 0).r;
-                v.vertex.xyz += v.normal * height;
                 
                 o.uv = TRANSFORM_TEX(v.uv, _albedo);
                 
                 o.normal = TransformObjectToWorldNormal(v.normal);
-                o.tangent = TransformObjectToWorldDir(v.tangent);
-                o.bitangent = cross(o.normal, o.tangent) * v.tangent.w;
+                o.tangent = TransformObjectToWorldNormal(v.tangent.xyz);
+
+                o.bitangent = cross(o.normal, o.tangent.xyz) * v.tangent.w;
+
                 
                 o.vertex = TransformObjectToHClip(v.vertex);
                 o.worldPos = mul(unity_ObjectToWorld, v.vertex);
@@ -92,7 +88,23 @@
                 
 
                 float3 normal = normalize(i.normal);
+
+
+                float3 tangentSpaceNormal = UnpackNormal(SAMPLE_TEXTURE2D(_normalMap, sampler_normalMap, uv));
+
+                tangentSpaceNormal = lerp(float3(0, 0, 1), tangentSpaceNormal, _normalIntensity);
+                
+                float3x3 tangentToWorld = float3x3 (
+                    i.tangent.x, i.bitangent.x, i.normal.x,
+                    i.tangent.y, i.bitangent.y, i.normal.y,
+                    i.tangent.z, i.bitangent.z, i.normal.z
+                );
+
+                
+                normal = mul(tangentToWorld, tangentSpaceNormal);
+                
                 color = blinnphong(uv, normal, i.worldPos);
+                
                 
                 return float4(color, 1.0);
             }

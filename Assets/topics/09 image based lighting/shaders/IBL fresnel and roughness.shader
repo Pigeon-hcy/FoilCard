@@ -3,13 +3,16 @@
         _albedo ("albedo", 2D) = "white" {}
         [NoScaleOffset] _normalMap ("normal map", 2D) = "bump" {}
         [NoScaleOffset] _displacementMap ("displacement map", 2D) = "gray" {}
-        
+        [NoScaleOffset] _roughnessMap ("roughness map", 2D) = "white" {}
         [NoScaleOffset] _IBL ("IBL cube map", Cube) = "black" {}
 
-        // brightness of specular reflection - proportion of color contributed by diffuse and specular
-        // reflectivity at 1, color is all specular
-        _reflectivity ("reflectivity", Range(0,1)) = 0.5
-        _fresnelPower ("fresnel power", Range(0, 10)) = 5
+        _metallic ("metallic", Range(0,1)) = 1.0
+        _saturation ("saturation", Range(0, 3)) = 2.0
+        _specularTint ("specular tint", Color) = (1, 0.2, 0.2, 1)
+        
+
+        _reflectivity ("reflectivity", Range(0,1)) = 0.95
+        _fresnelPower ("fresnel power", Range(0, 10)) = 3
         _normalIntensity ("normal intensity", Range(0, 1)) = 1
         _displacementIntensity ("displacement intensity", Range(0, 0.5)) = 0
     }
@@ -31,6 +34,9 @@
             float _normalIntensity;
             float _displacementIntensity;
             float _fresnelPower;
+            float _metallic;
+            float _saturation;
+            float4 _specularTint;
             float4 _albedo_ST;
             CBUFFER_END
 
@@ -43,7 +49,8 @@
             TEXTURE2D(_displacementMap);
             SAMPLER(sampler_displacementMap);
 
-            
+            TEXTURE2D(_roughnessMap);
+            SAMPLER(sampler_roughnessMap);
             
             TEXTURECUBE(_IBL);
             SAMPLER(sampler_IBL);
@@ -52,7 +59,6 @@
                 float4 vertex : POSITION;
                 float3 normal : NORMAL;
 
-                // xyz is the tangent direction, w is the tangent sign
                 float4 tangent : TANGENT;
                 float2 uv : TEXCOORD0;
             };
@@ -83,7 +89,6 @@
                 return o;
             }
 
-            // construct our tangent space matrix and sample our normal map
             float3 get_normal (Interpolators i) {
                 float3 tangentSpaceNormal = UnpackNormal(SAMPLE_TEXTURE2D(_normalMap, sampler_normalMap, i.uv));
                 tangentSpaceNormal = normalize(lerp(float3(0, 0, 1), tangentSpaceNormal, _normalIntensity));
@@ -97,10 +102,14 @@
                 return mul(tangentToWorld, tangentSpaceNormal);
             }
 
-            // function to claculate direct diffuse and direct specular falloff
-            // r: diffuse falloff
-            // g: specular falloff
-            float2 lighting_falloff (Interpolators i, float3 normal) {
+            
+            float3 adjust_saturation(float3 color, float saturation) {
+                float luminance = dot(color, float3(0.299, 0.587, 0.114));
+                return lerp(float3(luminance, luminance, luminance), color, saturation);
+            }
+
+
+            float2 lighting_falloff (Interpolators i, float3 normal, float roughness) {
                 Light light = GetMainLight();
                 
                 float3 viewDirection = normalize(GetCameraPositionWS() - i.worldPos);
@@ -108,7 +117,7 @@
 
                 float directDiffuse = max(0, dot(normal, light.direction));
                 float directSpecular = max(0, dot(normal, halfDirection));
-                float gloss = 1;
+                float gloss = 1-roughness;
                 directSpecular = pow(directSpecular, gloss * MAX_SPECULAR_POWER + 1) * gloss;
 
                 return float2(directDiffuse, directSpecular);
@@ -119,16 +128,17 @@
                 float3 normal = get_normal(i);
                 float roughness = 1;
 
+                roughness = SAMPLE_TEXTURE2D(_roughnessMap, sampler_roughnessMap, i.uv).r;
                 
-                
-                float2 directFalloff = lighting_falloff(i, normal);
+                float2 directFalloff = lighting_falloff(i, normal, roughness);
                 float directDiffuseFalloff  = directFalloff.r;
                 float directSpecularFalloff = directFalloff.g;
                 
-                // INDIRECT DIFFUSE
+                float3 baseColor = SAMPLE_TEXTURE2D(_albedo, sampler_albedo, i.uv).rgb;
+                baseColor = adjust_saturation(baseColor, _saturation);
+                
                 float3 indirectDiffuse = SAMPLE_TEXTURECUBE_LOD(_IBL, sampler_IBL, normal, DIFFUSE_MIP_LEVEL);
                 
-                // INDIRECT SPECULAR
                 float3 viewDirection = normalize(GetCameraPositionWS() - i.worldPos);
                 float3 viewReflection = reflect(-viewDirection, normal);
 
@@ -137,21 +147,24 @@
                 
                 float fresnel = 1 - saturate(dot(viewDirection, normal));
                 fresnel = pow(fresnel, _fresnelPower);
-                // since fresnel affects reflectivity, we'll use it to modify the reflectivity variable
-                float reflectivity = _reflectivity * fresnel;       
+
+                float reflectivity = lerp(_reflectivity * fresnel, 1.0, _metallic * 0.9);
                 
-                // since the diffuse and reflective properties of an object are inversely related, we want to set up our surface color to lerp between black and the albedo based on the inverse of reflectivity
-                // if 0% reflective -> all diffuse
-                float3 surfaceColor = lerp(0, SAMPLE_TEXTURE2D(_albedo, sampler_albedo, i.uv).rgb, 1 - reflectivity);
+
+                float3 diffuseColor = lerp(baseColor, float3(0, 0, 0), _metallic);
+                float3 specularColor = lerp(float3(1, 1, 1), baseColor, _metallic);
+
+                specularColor *= _specularTint.rgb;
+
+                float3 surfaceColor = lerp(0, diffuseColor, 1 - reflectivity);
 
                 Light light = GetMainLight();
-                // sum up all incoming light (direct + indirect) then multiply by the surface color, because the surface color still fully determines what light gets absorbed/reflected
                 float3 diffuse = surfaceColor * (directDiffuseFalloff * light.color + indirectDiffuse);
-
-                float3 directSpecular = light.color * directSpecularFalloff;
-                float3 specular = directSpecular + indirectSpecular * reflectivity;
+                float3 directSpecular = light.color * directSpecularFalloff * specularColor;
+                float3 specular = (directSpecular + indirectSpecular * specularColor) * reflectivity;
                 
                 color = diffuse + specular;
+                
                 return float4(color, 1.0);
             }
             ENDHLSL

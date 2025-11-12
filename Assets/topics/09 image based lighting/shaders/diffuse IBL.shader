@@ -1,5 +1,5 @@
-Shader "shader lab/week 9/diffuse IBL" {
-Properties {
+﻿Shader "shader lab/week 9/diffuse IBL" {
+    Properties {
         _albedo ("albedo", 2D) = "white" {}
         [NoScaleOffset] _normalMap ("normal map", 2D) = "bump" {}
         [NoScaleOffset] _displacementMap ("displacement map", 2D) = "black" {}

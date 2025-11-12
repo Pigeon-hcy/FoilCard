@@ -7,6 +7,7 @@
         _gloss ("gloss", Range(0,1)) = 1
         _normalIntensity ("normal intensity", Range(0, 1)) = 1
         _displacementIntensity ("displacement intensity", Range(0, 0.5)) = 0
+        _refractionIntensity ("refraction intensity", Range(0, 0.5)) = 0.5
         _opacity ("opacity", Range(0,1)) = 1
     }
     SubShader {
@@ -15,6 +16,7 @@
             "Queue" = "Transparent"
             "IgnoreProjector" = "True"
         }
+        
         Pass {
             HLSLPROGRAM
             #pragma vertex vert
@@ -30,7 +32,7 @@
             float _normalIntensity;
             float _displacementIntensity;
             float _opacity;
-            float _refectionIntensity;
+            float _refractionIntensity;
             float4 _albedo_ST;
             CBUFFER_END
                        
@@ -60,6 +62,7 @@
                 float3 tangent : TEXCOORD2;
                 float3 bitangent : TEXCOORD3;
                 float3 posWorld : TEXCOORD4;
+                float4 screenUV : TEXCOORD5;
             };
 
             Interpolators vert (MeshData v) {
@@ -74,7 +77,7 @@
                 v.vertex.xyz += v.normal * height * _displacementIntensity;
                 
                 o.vertex = TransformObjectToHClip(v.vertex);
-                
+                o.screenUV = ComputeScreenPos(o.vertex); // clip space vertex position only
 
                 o.posWorld = mul(unity_ObjectToWorld, v.vertex);
                 
@@ -84,9 +87,18 @@
             float4 frag (Interpolators i) : SV_Target {
                 float2 uv = i.uv;
                 float3 color = 0;
+
+                float2 screenUV = i.screenUV.xy / i.screenUV.w;
+                
                 
                 float3 tangentSpaceNormal = UnpackNormal(SAMPLE_TEXTURE2D(_normalMap, sampler_normalMap, uv));
                 tangentSpaceNormal = normalize(lerp(float3(0, 0, 1), tangentSpaceNormal, _normalIntensity));
+
+
+
+                float2 refractionUV = screenUV.xy + (tangentSpaceNormal.xy * _refractionIntensity);
+                float3 background = SAMPLE_TEXTURE2D(_CameraOpaqueTexture, sampler_CameraOpaqueTexture, refractionUV);
+
                 
                 float3x3 tangentToWorld = float3x3 (
                     i.tangent.x, i.bitangent.x, i.normal.x,
@@ -109,6 +121,8 @@
 
                 float3 specular = pow(specularFalloff, _gloss * MAX_SPECULAR_POWER + 1) * light.color * _gloss;
                 float3 diffuse = diffuseFalloff * surfaceColor * light.color * _tint;
+
+                color = lerp(background, diffuse, _opacity) + specular;
                 
                 return float4(color, 1);
             }

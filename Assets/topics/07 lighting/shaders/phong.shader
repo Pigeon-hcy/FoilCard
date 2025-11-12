@@ -1,4 +1,4 @@
-﻿Shader "shader lab/week 7/phong" {
+Shader "shader lab/week 7/phong" {
     Properties {
         _surfaceColor ("surface color", Color) = (0.8, 0.8, 0.8, 1)
         _metallic ("metallic", Range(0, 1)) = 0.95 
@@ -66,47 +66,37 @@
                 
                 float fresnel = pow(1 - max(0, dot(viewDirection, normal)), _fresnelPower);
                 
-                // Diffuse calculation
                 float diffuseFalloff = max(0, dot(normal, light.direction));
                 
-                // Specular calculation
                 float3 lightReflectionDirection = normalize(reflect(-light.direction , normal));
                 float specularFalloff = max(0, dot(lightReflectionDirection, viewDirection));
                 specularFalloff = pow(specularFalloff, _gloss * MAX_SPECULAR_POWER + 1) * _gloss;
 
-                // Calculate view space right direction (camera relative)
                 float3 upDirection = float3(0, 1, 0);
                 float3 cameraRight = normalize(cross(upDirection, viewDirection));
                 
-                // Calculate gradient based on view-space horizontal position (left to right from camera perspective)
-                float gradient = dot(normal, cameraRight); // -1 to 1 for left to right
-                gradient = gradient * 0.5 + 0.5; // convert to 0 to 1
+                float gradient = dot(normal, cameraRight); 
+                gradient = gradient * 0.5 + 0.5; 
                 
-                // Interpolate between left (purple) and right (blue) colors
                 float3 gradientColor = lerp(_leftColor.rgb, _rightColor.rgb, gradient);
                 
-                // Center darkness effect (darker where two highlights meet in the middle)
                 float centerFactor = 1 - (1 - abs(gradient - 0.5) * 2) * _centerDarkness;
 
-                // Metallic workflow: metals have colored specular, non-metals have white specular
                 float3 specularColor = lerp(float3(1, 1, 1), _surfaceColor, _metallic);
                 
-                // Diffuse is reduced for metals
+
                 float3 diffuse = diffuseFalloff * _surfaceColor * light.color * (1 - _metallic * 0.96);
                 
-                // Specular with gradient color and metallic tint
                 float3 specular = specularFalloff * gradientColor * specularColor * centerFactor;
-                specular *= (1 + _metallic * 2); // Boost specular intensity for metals
+                specular *= (1 + _metallic * 2); 
 
-                // Rim lighting calculation with fresnel boost
                 float rimDot = 1 - max(0, dot(viewDirection, normal));
                 float rimFalloff = pow(rimDot, _rimPower) * _rimIntensity;
                 float3 rim = rimFalloff * gradientColor * centerFactor * (1 + fresnel);
 
-                // Combine lighting
+
                 color = diffuse + specular + rim;
                 
-                // Add ambient metallic reflection
                 float3 ambient = _surfaceColor * 0.1 * _metallic;
                 color += ambient;
                 

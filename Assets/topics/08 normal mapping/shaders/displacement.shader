@@ -2,8 +2,10 @@
     Properties {
         _albedo ("albedo", 2D) = "white" {}
         [NoScaleOffset] _normalMap ("normal map", 2D) = "bump" {}
+        [NoScaleOffset] _displacementMap ("displacement map", 2D) = "gray" {}
         _gloss ("gloss", Range(0,1)) = 1
         _normalIntensity ("normal intensity", Range(0, 1)) = 1
+        _displacementIntensity ("displacement intensity", Range(0, 0.5)) = 0
     }
     SubShader {
         Tags { "RenderPipeline" = "UniversalPipeline" }
@@ -19,7 +21,7 @@
             CBUFFER_START(UniytPerMaterial)
             float _gloss;
             float _normalIntensity;
-
+            float _displacementIntensity;
             float4 _albedo_ST;
             CBUFFER_END
 
@@ -28,6 +30,9 @@
 
             TEXTURE2D(_normalMap);
             SAMPLER(sampler_normalMap);
+
+            TEXTURE2D(_displacementMap);
+            SAMPLER(sampler_displacementMap);
 
             struct MeshData {
                 float4 vertex : POSITION;
@@ -50,6 +55,10 @@
             Interpolators vert (MeshData v) {
                 Interpolators o;
                 o.uv = TRANSFORM_TEX(v.uv, _albedo);
+
+                float height = SAMPLE_TEXTURE2D_LOD(_displacementMap, sampler_displacementMap, o.uv, 0).r;
+                v.vertex.xyz += height * v.normal * _displacementIntensity;
+                
                 
                 o.normal = TransformObjectToWorldNormal(v.normal);
                 o.tangent = TransformObjectToWorldNormal(v.tangent);

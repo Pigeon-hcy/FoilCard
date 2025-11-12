@@ -40,12 +40,12 @@ Material:
     - _displacementIntensity: 0.123
     - _gloss: 1
     - _normalIntensity: 0.603
-    - _opacity: 0.799
-    - _refractionIntensity: 0.359
+    - _opacity: 0.512
+    - _refractionIntensity: 0.13
     - _specularContrast: 32
     - _specularIntensity: 1
     m_Colors:
     - _color: {r: 0.5235849, g: 0.70769066, b: 1, a: 1}
-    - _tint: {r: 0.3443396, g: 0.56112236, b: 1, a: 1}
+    - _tint: {r: 0.514151, g: 0.86440164, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

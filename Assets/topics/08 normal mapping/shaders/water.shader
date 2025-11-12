@@ -98,7 +98,11 @@
                 float2 screenUV = i.screenUV.xy / i.screenUV.w;
                 
                 float3 tangentSpaceNormal = UnpackNormal(_normalMap.Sample(sampler_normalMap, uv + i.uvPan.xy));
+                float3 tangentSpaceDetailNormal = UnpackNormal(_normalMap.Sample(sampler_normalMap, (uv * 5) + i.uvPan.zw));
 
+                // blending normals together whiteout blend
+                tangentSpaceNormal = BlendNormalRNM(tangentSpaceNormal, tangentSpaceDetailNormal);
+                
                 
                 tangentSpaceNormal = normalize(lerp(float3(0, 0, 1), tangentSpaceNormal, _normalIntensity));
                 

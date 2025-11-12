@@ -12,8 +12,7 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
-  m_InvalidKeywords:
-  - _TOGGLE_ON
+  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -28,21 +27,17 @@ Material:
         m_Texture: {fileID: 2800000, guid: 4034495bbd23544aa893e50ef8f121ce, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _displacementMap:
-        m_Texture: {fileID: 2800000, guid: 725a49dd066f34ba2bb30f01516b5398, type: 3}
-        m_Scale: {x: 2.89, y: 2.71}
-        m_Offset: {x: 5.64, y: 2.51}
     - _normalMap:
         m_Texture: {fileID: 2800000, guid: 964369987c99b476eb34aa4e5479eec6, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _gloss: 0
+    - _gloss: 0.773
     - _normalIntensity: 1
     - _specularContrast: 32
     - _specularIntensity: 0.424
-    - _toggle: 1
+    - _toggle: 0
     m_Colors:
     - _surfaceColor: {r: 0.4, g: 0.1, b: 0.9, a: 1}
   m_BuildTextureStacks: []
