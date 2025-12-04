@@ -23,12 +23,19 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _ditherPattern:
         m_Texture: {fileID: 2800000, guid: 37d69a8f7cc3e4996ac5edbc9e90b2e3, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _ColorLevels: 2
+    - _DitherScale: 1
+    - _DitherStrength: 1
     - _threshold: -0.02
     m_Colors: []
   m_BuildTextureStacks: []

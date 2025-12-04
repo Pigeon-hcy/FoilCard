@@ -25,7 +25,7 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _resolution: 30
+    - _resolution: 81.8
     m_Colors: []
   m_BuildTextureStacks: []
   m_AllowLocking: 1

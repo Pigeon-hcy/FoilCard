@@ -29,6 +29,9 @@ public class MouseHover : MonoBehaviour
     List<GameObject> particles;
     [SerializeField]
     private CardCamera previewCamera;
+    [SerializeField]
+    private SpriteRenderer spriteRenderer;
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -62,6 +65,7 @@ public class MouseHover : MonoBehaviour
 
     private void OnMouseEnter()
     {
+        spriteRenderer.sortingOrder = 10;
         idle = false;
         isMouseOver = true;
         timer = 0f;
@@ -88,13 +92,14 @@ public class MouseHover : MonoBehaviour
 
         if (previewCamera != null)
         {
-            previewCamera.angle = Mathf.Clamp(180f + offset.x * 20f, 150f, 210f);  // 左右转动
-            previewCamera.height = Mathf.Clamp(offset.y * 1.2f, -2f, 1f); // 上下转动模拟 pitch
+            previewCamera.angle = Mathf.Clamp(180f + offset.x * 20f, 150f, 210f); 
+            previewCamera.height = Mathf.Clamp(offset.y * 1.2f, -2f, 1f); 
         }
     }
 
     private void OnMouseExit()
     {
+        spriteRenderer.sortingOrder = 0;
         idle = true;
         isMouseOver = false;
         timer = 0f;

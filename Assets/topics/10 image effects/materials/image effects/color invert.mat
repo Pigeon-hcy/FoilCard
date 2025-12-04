@@ -27,21 +27,21 @@ Material:
     m_Floats:
     - _ColorVarianceThreshold: 0.05
     - _DitherFade: 0
-    - _DitherScale: 1.66
+    - _DitherScale: 0.06
     - _EdgeThickness: 1.5
     - _EdgeThreshold: 0.02
-    - _FlatAreaReduction: 0.651
-    - _Gamma: 2.57
-    - _PixelSize: 545.22
-    - _SkyboxDitherReduction: 0.233
-    - _ThresholdHigh: 0.3
+    - _FlatAreaReduction: 0.62
+    - _Gamma: 1
+    - _PixelSize: 511.47
+    - _SkyboxDitherReduction: 0
+    - _ThresholdHigh: 1
     - _ThresholdLow: 0
-    - _VignettePower: 3.11
-    - _VignetteStrength: 1
+    - _VignettePower: 1.67
+    - _VignetteStrength: 0
     m_Colors:
-    - _LowResolution: {r: 640, g: 360, b: 0, a: 0}
+    - _LowResolution: {r: 960, g: 950, b: 0, a: 0}
     - _ScreenDimensions: {r: 1920, g: 1080, b: 0, a: 0}
     - _ScreenSize: {r: 1920, g: 1080, b: 0, a: 0}
-    - _TintColor: {r: 0.9019608, g: 1, b: 0.9174618, a: 1}
+    - _TintColor: {r: 0.7186432, g: 0.745283, b: 0.6925507, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
