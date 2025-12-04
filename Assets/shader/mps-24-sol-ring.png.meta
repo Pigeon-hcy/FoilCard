@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 871c02124ca12474d9ae14170e951ac9
+guid: 3e72d42fdcea9fb47b6cdacdc51b46e5
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7469058497499357284
-    second: sld-1011-sol-ring_0
+      213: -1402108121659728249
+    second: mps-24-sol-ring_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,7 +113,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: sld-1011-sol-ring_0
+      name: mps-24-sol-ring_0
       rect:
         serializedVersion: 2
         x: 0
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c9f10f98ed2985890800000000000000
-      internalID: -7469058497499357284
+      spriteID: 78e18cf8716ba8ce0800000000000000
+      internalID: -1402108121659728249
       vertices: []
       indices: 
       edges: []
@@ -147,8 +147,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      sld-1011-sol-ring_0: -7469058497499357284
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
