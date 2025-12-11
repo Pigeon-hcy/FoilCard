@@ -23,6 +23,7 @@
         _specularLeftColor ("Specular Left Color", Color) = (0.2, 0.4, 0.8, 1)
         _specularRightColor ("Specular Right Color", Color) = (0.8, 0.9, 1.0, 1)
         _normalIntensity ("Normal Intensity", Range(0, 1)) = 1.0
+        _maskMode ("Mask Mode", Int) = 0
     }
     
     SubShader {
@@ -67,6 +68,7 @@
             float4 _specularLeftColor;
             float4 _specularRightColor;
             float _normalIntensity;
+            int _maskMode;
             
             float4 _albedo_ST;
             CBUFFER_END

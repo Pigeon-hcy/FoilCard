@@ -25,98 +25,160 @@ public class MouseHover : MonoBehaviour
     bool isMouseOver;
     float timer;
     bool isAnimating;
+    bool isRotating;
+    float rotationTimer;
+    float rotationStartY;
+    float rotationTargetY;
     [SerializeField]
     List<GameObject> particles;
     [SerializeField]
     private CardCamera previewCamera;
     [SerializeField]
     private SpriteRenderer spriteRenderer;
+    [SerializeField]
+    private bool backFacing;
+    [SerializeField]
+    private AnimationCurve reverseCurve;
+    [SerializeField]
+    private GameObject[] particleList;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         originalScale = transform.localScale;
         targetScale = originalScale * 1.5f;
+        float baseYRotation = backFacing ? 180f : 0f;
+        Vector3 currentRotation = transform.localRotation.eulerAngles;
+        transform.localRotation = Quaternion.Euler(currentRotation.x, baseYRotation, currentRotation.z);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (idle)
+        if (isRotating)
         {
-            cardIdle();
+            rotationTimer += Time.deltaTime;
+            float t = Mathf.Clamp01(rotationTimer / duration);
+            float curveValue = reverseCurve != null ? reverseCurve.Evaluate(t) : t;
+                
+
+            float currentY = Mathf.LerpAngle(rotationStartY, rotationTargetY, curveValue);
+            Vector3 currentRotation = transform.localRotation.eulerAngles;
+
+            transform.localRotation = Quaternion.Euler(currentRotation.x, currentY, currentRotation.z);
+            
+            if (t >= 1f)
+            {
+                isRotating = false;
+                transform.localRotation = Quaternion.Euler(currentRotation.x, rotationTargetY, currentRotation.z);
+            }
+        }
+        else
+        {
+            if (backFacing)
+            {
+                Vector3 currentRotation = transform.localRotation.eulerAngles;
+                transform.localRotation = Quaternion.Euler(currentRotation.x, 180f, currentRotation.z);
+            }
         }
 
-        if (isAnimating)
+        
+        
+        if (!backFacing)
         {
-            timer += Time.deltaTime;
-            float t = Mathf.Clamp01(timer / duration);
-            float curveValue = AnimationCurve.Evaluate(t);
+            if (idle && !isRotating)
+            {
+                cardIdle();
+            }
 
-            if (isMouseOver)
-                transform.localScale = Vector3.LerpUnclamped(originalScale, targetScale, curveValue);
-            else
-                transform.localScale = Vector3.LerpUnclamped(targetScale, originalScale, curveValue);
+            if (isAnimating)
+            {
+                timer += Time.deltaTime;
+                float t = Mathf.Clamp01(timer / duration);
+                float curveValue = AnimationCurve.Evaluate(t);
 
-            if (t >= 1f)
-                isAnimating = false;
+                if (isMouseOver)
+                    transform.localScale = Vector3.LerpUnclamped(originalScale, targetScale, curveValue);
+                else
+                    transform.localScale = Vector3.LerpUnclamped(targetScale, originalScale, curveValue);
+
+                if (t >= 1f)
+                    isAnimating = false;
+            }
         }
     }
 
     private void OnMouseEnter()
     {
-        spriteRenderer.sortingOrder = 10;
-        idle = false;
-        isMouseOver = true;
-        timer = 0f;
-        isAnimating = true;
-        if (particles != null)
+        if (!backFacing)
         {
-            for (int i = 0; i < particles.Count; ++i)
+            spriteRenderer.sortingOrder = 10;
+            idle = false;
+            isMouseOver = true;
+            timer = 0f;
+            isAnimating = true;
+            if (particles != null)
             {
-                particles[i].transform.localScale = new Vector3(2, 2, 2);
+                for (int i = 0; i < particles.Count; ++i)
+                {
+                    particles[i].transform.localScale = new Vector3(2, 2, 2);
+                }
+                
             }
-            
         }
     }
 
     private void OnMouseOver()
     {
-        Vector3 screenPos = Input.mousePosition;
-        screenPos.z = Mathf.Abs(Camera.main.transform.position.z - transform.position.z);
-
-        Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(screenPos);
-        Vector3 offset = transform.position - mouseWorldPos;
-
-        transform.localRotation = Quaternion.Euler(-offset.y * Range, offset.x * Range, 0f);
-
-        if (previewCamera != null)
+        if (!backFacing && !isRotating)
         {
-            previewCamera.angle = Mathf.Clamp(180f + offset.x * 20f, 150f, 210f); 
-            previewCamera.height = Mathf.Clamp(offset.y * 1.2f, -2f, 1f); 
+            Vector3 screenPos = Input.mousePosition;
+            screenPos.z = Mathf.Abs(Camera.main.transform.position.z - transform.position.z);
+
+            Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(screenPos);
+            Vector3 offset = transform.position - mouseWorldPos;
+
+            transform.localRotation = Quaternion.Euler(-offset.y * Range, offset.x * Range, 0f);
+
+            if (previewCamera != null)
+            {
+                previewCamera.angle = Mathf.Clamp(180f + offset.x * 20f, 150f, 210f); 
+                previewCamera.height = Mathf.Clamp(offset.y * 1.2f, -2f, 1f); 
+            }
+        }
+    }
+
+    private void OnMouseUp()
+    {
+        if (backFacing)
+        {
+            faceToFront();
         }
     }
 
     private void OnMouseExit()
     {
-        spriteRenderer.sortingOrder = 0;
-        idle = true;
-        isMouseOver = false;
-        timer = 0f;
-        isAnimating = true;
-        if (particles != null)
+        if (!backFacing)
         {
-            for (int i = 0; i < particles.Count; ++i)
+            spriteRenderer.sortingOrder = 0;
+            idle = true;
+            isMouseOver = false;
+            timer = 0f;
+            isAnimating = true;
+            if (particles != null)
             {
-                particles[i].transform.localScale = new Vector3(1, 1, 1);
+                for (int i = 0; i < particles.Count; ++i)
+                {
+                    particles[i].transform.localScale = new Vector3(1, 1, 1);
+                }
+
             }
 
-        }
-
-        if (previewCamera != null)
-        {
-            previewCamera.angle = 185f;  
-            previewCamera.height = 0; 
+            if (previewCamera != null)
+            {
+                previewCamera.angle = 185f;  
+                previewCamera.height = 0; 
+            }
         }
     }
 
@@ -129,5 +191,46 @@ public class MouseHover : MonoBehaviour
         transform.localRotation = Quaternion.Euler(this.transform.rotation.x, this.transform.rotation.y, Tiltz);
     }
 
-
+    private void faceToFront()
+    {
+        backFacing = false;
+        UpdateCardRotation();
+        
+        if(particleList != null)
+        {
+            for (int i = 0; i < particleList.Length; ++i)
+            {
+                particleList[i].SetActive(true);
+            }
+        }
+    }
+    
+    
+    private void UpdateCardRotation()
+    {
+        if (reverseCurve != null)
+        {
+            Vector3 currentRotation = transform.localRotation.eulerAngles;
+            
+            if (backFacing)
+            {
+                rotationStartY = 0f;
+                rotationTargetY = 180f;
+            }
+            else
+            {
+                rotationStartY = 180f;
+                rotationTargetY = 0f;
+            }
+            
+            isRotating = true;
+            rotationTimer = 0f;
+        }
+        else
+        {
+            float baseYRotation = backFacing ? 180f : 0f;
+            Vector3 currentRotation = transform.localRotation.eulerAngles;
+            transform.localRotation = Quaternion.Euler(currentRotation.x, baseYRotation, currentRotation.z);
+        }
+    }
 }

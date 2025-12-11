@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: object a
-  m_Shader: {fileID: 4800000, guid: 2f2af840d51434e27b6620eb007240fc, type: 3}
+  m_Name: LShader
+  m_Shader: {fileID: 4800000, guid: efbacc93c2a03aa48933ea2aa2a6b396, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -23,18 +23,23 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _Holo:
+        m_Texture: {fileID: 2800000, guid: 133734d3b1eb67a409885433b6d416f2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 08de7f9a0ef14be4cab62306383531ca, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _diffuseLightSteps: 4
-    - _gloss: 1
-    - _specularLightSteps: 2
-    - _stencilRef: 1
+    - _HueShiftDegree: 1214.15
+    - _RingFrequency: 22.18
+    - _RingIntensity: 0.397
+    - _WaveFrequency: 5.83
+    - _WaveIntensity: 0
     m_Colors:
-    - _ambientColor: {r: 0, g: 0, b: 0, a: 1}
-    - _surfaceColor: {r: 1, g: 1, b: 1, a: 1}
+    - _HaloColor: {r: 1, g: 0.995283, b: 0.995283, a: 1}
+    - _HueColor: {r: 0.8192029, g: 1, b: 0.8160377, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
